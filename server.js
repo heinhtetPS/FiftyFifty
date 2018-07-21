@@ -13,8 +13,6 @@ app.use(cors());
 
 app.get('/match', (req, res) => {
   let matchData = 'yo';
-
-
     res.send(matchData);
 
 });
@@ -24,11 +22,6 @@ app.get('/vs', (req, res) => {
 
     res.send(vsData);
 });
-
-// app.get('/searchbyname', (req, res) => {
-//   name = Object.keys(req.query)[0];
-//   res.send(name);
-// });
 
 const port = process.env.PORT || 4000;
 
