@@ -2,7 +2,7 @@
 
 ![alt text](https://github.com/heinhtetPS/weather-test/blob/master/public/preview.jpg "preview")
 
-This is a simple single-page app that tests your knowledge of
+This is a simple single-page app that tests your knowledge of random statistics relating to world countries such as population, capital cities, size etc... Each questions has only 2 choices, making it a 50/50 chance of getting it right. However, can you do it 10 times in a row?
 
 ### MVP GOALS
 - User is posed a question with 2 options to choose from.
@@ -28,27 +28,6 @@ Simply download the repo, cd into the directory and run npm -install. Before run
 - Populate boxes with real data and fix the css
 
 ### Future Directions / Improvements
-- Use the DAILY API call instead of the forecast one which gives you a more appropriate results
-- Implement unit converter option so user can choose to see F or C
-- Instead of having cities set in stone, we can have the user choose a city via menu or search
-- Have style options such as dark mode or light mode
+
 
 ### Implementation issues/problems:
-- Problems displaying UTF-8 symbols
-  - Fixed above by just copy pasting the symbol
-- ditched async.waterfall in favor of just doing 5 requests in a row
-- Data has now been passed into individual boxes. But for some reason props.info.main is undefined
-- Props problem has been figured out, however it presents a new problem:
-  - Props are undefined because re-render always re-pulls empty info from weathercontainer state
-  - This is because STATE is not changed after API call
-  - Need to use setState instead of extend inside API call
-  - Fixed this problem by using forceUpdate, can probably also use complicated variations of setState
-- next: Implement large page, fix css and icons, another api call for forecast?
-  - large page has no props when it starts, just call the forecast API with 6 count, number 0 is today
-- DANGER: Objects inside arrays that cannot be accessed by index!!! (this cost me 2-3 hours)
-  - Example: `{ForecastList: [{etc: 10101}, {etc: 10101}, {etc: 10101}]}`
-  - (Above array contains objects that track each day's weather info, but they cannot be accessed via `.ForecastList[0]`
-  - Learn how to process these more easily
-- DANGER: API call for forecast was misinterpreted. Each entry wasn't 1 day, it was an interval of 3 hours.
-  - The daily? API call would not let me retrieve with the current API Key so I had to make due with the forecast data.
-  - I simply rejected useless data from the same day by tracking which days had already been forecasted
