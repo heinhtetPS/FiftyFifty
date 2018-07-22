@@ -6,10 +6,18 @@
   display: flex;
 }
 
+.versus {
+  position: absolute;
+  top: 40%;
+  left: 46%;
+  font-size: 40px;
+}
+
 .main-left {
   width: 48%;
   height: 400px;
   background-color: red;
+  box-sizing: border-box;
 }
 
 .main-left:hover {
@@ -20,6 +28,7 @@
   width: 48%;
   height: 400px;
   background-color: blue;
+  box-sizing: border-box;
 }
 
 .main-right:hover {

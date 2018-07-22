@@ -38,6 +38,7 @@ class App extends Component {
       <div className="App">
         <header>
           <h1>50/50 Game</h1>
+          <h2>Countries of the World Quiz</h2>
         </header>
         <Questions />
         <MainFrame />
