@@ -11,17 +11,26 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get('/match', (req, res) => {
-  let matchData = 'yo';
-    res.send(matchData);
+app.get('/country', (req, res) => {
+  let countryData = {};
+  let cCode = Object.keys(req.query);
+  let queryURL = 'https://restcountries.eu/rest/v2/alpha/' + cCode;
+
+  request(queryURL, (err, response, body) => {
+    if (!err && response.statusCode === 200) {
+      var json = JSON.parse(body);
+      countryData = json;
+      console.log(countryData);
+
+    } else {
+      console.log(err);
+    }
+  });
+
+    res.send(countryData);
 
 });
 
-app.get('/vs', (req, res) => {
-  let vsData = 'hee';
-
-    res.send(vsData);
-});
 
 const port = process.env.PORT || 4000;
 
