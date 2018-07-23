@@ -31,6 +31,8 @@ class App extends Component {
         finalData = await response.json();
         let newData = this.state.data.concat(finalData);
         this.setState({data: newData});
+        if (this.state.data.length >= 18)
+        this.setState({gameStarted: true});
       } catch (err) {
         alert(err);
         console.log('error with fetch');
@@ -51,32 +53,38 @@ class App extends Component {
 
       this.fetchCountry(AllCodes[random]);
       usedValues.push(random);
-
-      if (i === 19)
-      this.setState({gameStarted: true});
     }
-
-    console.log(this.state);
   }
-
-  componentDidMount() {
-
-    }
 
   render() {
 
-    return (
-      <div className="App">
-        <header>
-          <h1>50/50 Game</h1>
-          <h2>Countries of the World Quiz</h2>
-        </header>
-        <button onClick={this.handleStart}>start</button>
-        <MainFrame countries={this.state.data}
-                   gameStarted={this.state.gameStarted}
-                   getRandom={this.getRandom}/>
-      </div>
-    );
+    if (this.state.gameStarted) {
+
+      return (
+        <div className="App">
+          <header>
+            <h1>50/50 Game</h1>
+            <h2>Countries of the World Quiz</h2>
+          </header>
+          <MainFrame countries={this.state.data}
+                     gameStarted={this.state.gameStarted}
+                     getRandom={this.getRandom}/>
+        </div>
+      );
+
+    } else {
+
+      return (
+        <div className="App">
+          <header>
+            <h1>50/50 Game</h1>
+            <h2>Countries of the World Quiz</h2>
+          </header>
+          <button onClick={this.handleStart}>start</button>
+            <h1 className="blinker">Press Start to Begin the Game!</h1>
+        </div>
+      );
+    }
   }
 }
 

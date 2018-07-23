@@ -1,16 +1,21 @@
 todo general
-- server call is returning correct data
-- now make the frontend execute the call and see the data
-- make sure you can make 20 calls in a row OR space them out a little and load
+- server call is returning correct data (DONE)
+- now make the frontend execute the call and see the data (DONE)
+- make sure you can make 20 calls in a row OR space them out a little and load (DONE)
 -
 
 
 server
-- currently the query response appears on the server logs but not the page
-- hopefully this will translate ok to the frontend 
+- currently the query response appears on the server logs but not the page (ES OK)
+- hopefully this will translate ok to the frontend
 
 frontend
-- Questions and MainFrame have to adhere to a larger State variable (maybe)
-- Score Tracker
-- State tracks end of game and displays end thing
+- Questions and MainFrame have to adhere to a larger State variable (just merged them)
+- Score Tracker (DONE)
+- State tracks end of game and displays end thing (DONE)
+- Seperate LEFT and RIGHT countries
 - Different questions have to cause different pieces of data to not be displayed
+    -
+
+GAME
+- Need to make some kind of answers module to figure it out
