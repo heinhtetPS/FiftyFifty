@@ -3,6 +3,10 @@
 }
 
 .main-container {
+
+}
+
+.boxes {
   display: flex;
 }
 
