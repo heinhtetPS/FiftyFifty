@@ -75,8 +75,6 @@ class App extends Component {
         <MainFrame countries={this.state.data}
                    gameStarted={this.state.gameStarted}
                    getRandom={this.getRandom}/>
-        <p>data store:</p>
-        <p>{this.state.gameStarted.toString()}</p>
       </div>
     );
   }
