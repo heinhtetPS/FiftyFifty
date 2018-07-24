@@ -1,3 +1,7 @@
+const unUsed = [
+
+];
+
 const AllQuestions = [
   "Which of the following countries has the higher population?",
   "Which of the following countries has the correct flag represented?",

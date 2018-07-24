@@ -4,12 +4,8 @@ import AllQuestions from '../allquestions.js';
 class MainFrame extends React.Component {
   constructor( props ) {
     super(props);
-    this.state = {LeftSide: [
-                      {name: "loading",
-                       alpha2Code: "loading"}],
-                  RightSide: [{name: "loading",
-                              alpha2Code: "loading"}],
-                  CurrentQuestion: 1,
+    this.state = {CurrentQuestion: 1,
+                  QuestionID: 0,
                   gameStarted: props.gameStarted,
                   playerScore: 0,
                   gameOver: false}
@@ -17,22 +13,20 @@ class MainFrame extends React.Component {
     this.handleAnswer = this.handleAnswer.bind(this);
     this.AdvanceQuestion = this.AdvanceQuestion.bind(this);
     this.IncreaseScore = this.IncreaseScore.bind(this);
-    this.placeCountries = this.placeCountries.bind(this);
     this.checkForGame = this.checkForGame.bind(this);
     this.restart = this.restart.bind(this);
-    this.pushLeft = this.pushLeft.bind(this);
-    this.pushRight = this.pushRight.bind(this);
     this.reveal = this.reveal.bind(this);
+    this.chooseQuestion = this.chooseQuestion.bind(this);
+    this.optionalInfo = this.optionalInfo.bind(this);
   }
 
   componentWillMount () {
-    if(this.state.LeftSide.length < 9)
-    this.placeCountries();
+
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState( { gameStarted: nextProps.gameStarted } );
-
+    this.setState({QuestionID: this.getRandom()});
   }
 
   reveal() {
@@ -49,17 +43,7 @@ class MainFrame extends React.Component {
     this.setState(prevState => {
            return {CurrentQuestion: prevState.CurrentQuestion + 1} });
     this.checkForGame();
-  }
-
-  pushLeft(country) {
-    let newstate = this.state.LeftSide.concat(country);
-    console.log(newstate);
-    this.setState({LeftSide: newstate});
-  }
-
-  pushRight(country) {
-    let newstate = this.state.RightSide.concat(country);
-    this.setState({RightSide: newstate});
+    this.chooseQuestion();
   }
 
   IncreaseScore() {
@@ -67,29 +51,78 @@ class MainFrame extends React.Component {
            return {playerScore: prevState.playerScore + 1} });
   }
 
+  chooseQuestion() {
+    let index = this.getRandom();
+    this.setState({QuestionID: index});
+  }
+
   checkForGame() {
     if (this.state.CurrentQuestion >= 10)
     this.setState({gameOver: true});
-  }
-
-  placeCountries() {
-    for (let i = 0; i <= 20; i++) {
-      if (i <= 10) {
-
-        this.pushLeft(this.props.countries[i]);
-
-      } else {
-        this.pushRight(this.props.countries[i]);
-      }
-    };
-
   }
 
   restart() {
     window.location.reload();
   }
 
-  handleAnswer(side) {
+  optionalInfo(question_num, leftside) {
+
+    let offset = leftside ? -1 : + 5;
+
+    let question = AllQuestions[this.state.QuestionID];
+
+    if (question.includes("flag")) {
+      console.log('flag ques');
+      return (
+        <div className="optional-block">
+          <img src={"https://www.countryflags.io/" + this.props.countries[this.state.CurrentQuestion-1].alpha2Code + "/flat/64.png"}></img>
+          <p>Capital City: {this.props.countries[this.state.CurrentQuestion + offset].capital}</p>
+          <p>Population: {this.props.countries[this.state.CurrentQuestion + offset].population}</p>
+          <p>Main Language: {this.props.countries[this.state.CurrentQuestion + offset].languages[0].name}</p>
+          <p>Internet Domain: {this.props.countries[this.state.CurrentQuestion + offset].topLevelDomain[0]}</p>
+        </div>
+      );
+    }
+
+    // if (question.includes("capital")) {
+    //   return (
+    //
+    //   );
+    // }
+    //
+    // if (question.includes("population")) {
+    //   return (
+    //
+    //   );
+    // }
+    //
+    // if (question.includes("language")) {
+    //   return (
+    //
+    //   );
+    // }
+    //
+    // if (question.includes("internet")) {
+    //   return (
+    //
+    //   );
+    // }
+
+    //default
+    return (
+      <div className="optional-block">
+        <img src={"https://www.countryflags.io/" + this.props.countries[this.state.CurrentQuestion + offset].alpha2Code + "/flat/64.png"}></img>
+        <p>Capital City: {this.props.countries[this.state.CurrentQuestion + offset].capital}</p>
+        <p>Population: {this.props.countries[this.state.CurrentQuestion + offset].population}</p>
+        <p>Main Language: {this.props.countries[this.state.CurrentQuestion + offset].languages[0].name}</p>
+        <p>Internet Domain: {this.props.countries[this.state.CurrentQuestion + offset].topLevelDomain[0]}</p>
+      </div>
+
+    );
+
+  }
+
+  handleAnswer(question_num, side) {
     //must create answerguide that looks at each question and has an algo to get correct answer
     //if you chose the correct side (right or left), then AdvanceQuestion and IncreaseScore, else just AdvanceQuestion
 
@@ -112,20 +145,20 @@ class MainFrame extends React.Component {
             <p>Your Score: {this.state.playerScore}/10</p>
                         <button onClick={this.reveal}>reveal</button>
               <div className="question-container">
-                <p>Question #{this.state.CurrentQuestion}: {AllQuestions[this.getRandom()]}</p>
+                <p>Question #{this.state.CurrentQuestion}: {AllQuestions[this.state.QuestionID]}</p>
               </div>
 
               <h1 className="versus">VS</h1>
 
               <div className="boxes">
                 <div className="main-left" onClick={this.AdvanceQuestion}>
-                  <p>{this.state.LeftSide[0].name}</p>
-
+                  <p className="country-text">{this.props.countries[this.state.CurrentQuestion-1].name}</p>
+                  {this.optionalInfo(this.state.CurrentQuestion, true)}
                 </div>
 
                 <div className="main-right" onClick={this.AdvanceQuestion}>
-                    <p>{this.state.RightSide[0].name}</p>
-
+                    <p className="country-text">{this.props.countries[this.state.CurrentQuestion+5].name}</p>
+                    {this.optionalInfo(this.state.CurrentQuestion, false)}
                 </div>
 
               </div>

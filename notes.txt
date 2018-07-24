@@ -7,13 +7,13 @@ todo general
 
 server
 - currently the query response appears on the server logs but not the page (ES OK)
-- hopefully this will translate ok to the frontend
+- hopefully this will translate ok to the frontend (OK)
 
 frontend
 - Questions and MainFrame have to adhere to a larger State variable (just merged them)
 - Score Tracker (DONE)
 - State tracks end of game and displays end thing (DONE)
-- Seperate LEFT and RIGHT countries
+- Seperate LEFT and RIGHT countries (Forget about it, just use props and add numbers)
 - Different questions have to cause different pieces of data to not be displayed
     -
 
