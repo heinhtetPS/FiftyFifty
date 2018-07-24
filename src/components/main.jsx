@@ -4,8 +4,8 @@ import AllQuestions from '../allquestions.js';
 class MainFrame extends React.Component {
   constructor( props ) {
     super(props);
-    this.state = {CurrentQuestion: 1,
-                  QuestionID: 0,
+    this.state = {QuestionCount: 1,
+                  CurrentQuestion: null,
                   gameStarted: props.gameStarted,
                   playerScore: 0,
                   gameOver: false}
@@ -26,11 +26,12 @@ class MainFrame extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState( { gameStarted: nextProps.gameStarted } );
-    this.setState({QuestionID: this.getRandom()});
+    this.setState({CurrentQuestion: this.getRandom()});
   }
 
   reveal() {
     console.log(this.state);
+    console.log(this.props.countries);
   }
 
   getRandom() {
@@ -41,7 +42,7 @@ class MainFrame extends React.Component {
 
   AdvanceQuestion() {
     this.setState(prevState => {
-           return {CurrentQuestion: prevState.CurrentQuestion + 1} });
+           return {QuestionCount: prevState.QuestionCount + 1} });
     this.checkForGame();
     this.chooseQuestion();
   }
@@ -53,11 +54,11 @@ class MainFrame extends React.Component {
 
   chooseQuestion() {
     let index = this.getRandom();
-    this.setState({QuestionID: index});
+    this.setState({CurrentQuestion: index});
   }
 
   checkForGame() {
-    if (this.state.CurrentQuestion >= 10)
+    if (this.state.QuestionCount >= 10)
     this.setState({gameOver: true});
   }
 
@@ -65,73 +66,97 @@ class MainFrame extends React.Component {
     window.location.reload();
   }
 
-  optionalInfo(question_num, leftside) {
+  optionalInfo(leftside) {
 
-    let offset = leftside ? -1 : + 5;
+    let offset = leftside ? -1 : + 9;
 
-    let question = AllQuestions[this.state.QuestionID];
+    let question = AllQuestions[this.state.CurrentQuestion];
+    if (this.state.CurrentQuestion === null)
+    return null;
 
     if (question.includes("flag")) {
-      console.log('flag ques');
       return (
         <div className="optional-block">
-          <img src={"https://www.countryflags.io/" + this.props.countries[this.state.CurrentQuestion-1].alpha2Code + "/flat/64.png"}></img>
-          <p>Capital City: {this.props.countries[this.state.CurrentQuestion + offset].capital}</p>
-          <p>Population: {this.props.countries[this.state.CurrentQuestion + offset].population}</p>
-          <p>Main Language: {this.props.countries[this.state.CurrentQuestion + offset].languages[0].name}</p>
-          <p>Internet Domain: {this.props.countries[this.state.CurrentQuestion + offset].topLevelDomain[0]}</p>
+          <img src={"https://www.countryflags.io/" + this.props.countries[this.state.QuestionCount-1].alpha2Code + "/flat/64.png"} alt="flag"></img>
+          <p>Capital City: {this.props.countries[this.state.QuestionCount + offset].capital}</p>
+          <p>Population: {this.props.countries[this.state.QuestionCount + offset].population}</p>
+          <p>Main Language: {this.props.countries[this.state.QuestionCount + offset].languages[0].name}</p>
+          <p>Internet Domain: {this.props.countries[this.state.QuestionCount + offset].topLevelDomain[0]}</p>
         </div>
       );
     }
 
-    // if (question.includes("capital")) {
-    //   return (
-    //
-    //   );
-    // }
-    //
-    // if (question.includes("population")) {
-    //   return (
-    //
-    //   );
-    // }
-    //
-    // if (question.includes("language")) {
-    //   return (
-    //
-    //   );
-    // }
-    //
-    // if (question.includes("internet")) {
-    //   return (
-    //
-    //   );
-    // }
+    if (question.includes("capital")) {
+      return (
+        <div className="optional-block">
+          <img src={"https://www.countryflags.io/" + this.props.countries[this.state.QuestionCount + offset].alpha2Code + "/flat/64.png"} alt="flag"></img>
+          <p>Capital City: {this.props.countries[this.state.QuestionCount-1].capital}</p>
+          <p>Population: {this.props.countries[this.state.QuestionCount + offset].population}</p>
+          <p>Main Language: {this.props.countries[this.state.QuestionCount + offset].languages[0].name}</p>
+          <p>Internet Domain: {this.props.countries[this.state.QuestionCount + offset].topLevelDomain[0]}</p>
+        </div>
+      );
+    }
+
+    if (question.includes("population")) {
+      return (
+        <div className="optional-block">
+          <img src={"https://www.countryflags.io/" + this.props.countries[this.state.QuestionCount + offset].alpha2Code + "/flat/64.png"} alt="flag"></img>
+          <p>Capital City: {this.props.countries[this.state.QuestionCount + offset].capital}</p>
+          <p>Main Language: {this.props.countries[this.state.QuestionCount + offset].languages[0].name}</p>
+          <p>Internet Domain: {this.props.countries[this.state.QuestionCount + offset].topLevelDomain[0]}</p>
+        </div>
+      );
+    }
+
+    if (question.includes("language")) {
+      return (
+        <div className="optional-block">
+          <img src={"https://www.countryflags.io/" + this.props.countries[this.state.QuestionCount + offset].alpha2Code + "/flat/64.png"} alt="flag"></img>
+          <p>Capital City: {this.props.countries[this.state.QuestionCount + offset].capital}</p>
+          <p>Population: {this.props.countries[this.state.QuestionCount + offset].population}</p>
+          <p>Main Language: {this.props.countries[this.state.QuestionCount-1].languages[0].name}</p>
+          <p>Internet Domain: {this.props.countries[this.state.QuestionCount + offset].topLevelDomain[0]}</p>
+        </div>
+      );
+    }
+
+    if (question.includes("internet")) {
+      return (
+        <div className="optional-block">
+          <img src={"https://www.countryflags.io/" + this.props.countries[this.state.QuestionCount + offset].alpha2Code + "/flat/64.png"} alt="flag"></img>
+            <p>Capital City: {this.props.countries[this.state.QuestionCount + offset].capital}</p>
+            <p>Population: {this.props.countries[this.state.QuestionCount + offset].population}</p>
+            <p>Main Language: {this.props.countries[this.state.QuestionCount + offset].languages[0].name}</p>
+            <p>Internet Domain: {this.props.countries[this.state.QuestionCount-1].topLevelDomain[0]}</p>
+        </div>
+      );
+    }
 
     //default
     return (
       <div className="optional-block">
-        <img src={"https://www.countryflags.io/" + this.props.countries[this.state.CurrentQuestion + offset].alpha2Code + "/flat/64.png"}></img>
-        <p>Capital City: {this.props.countries[this.state.CurrentQuestion + offset].capital}</p>
-        <p>Population: {this.props.countries[this.state.CurrentQuestion + offset].population}</p>
-        <p>Main Language: {this.props.countries[this.state.CurrentQuestion + offset].languages[0].name}</p>
-        <p>Internet Domain: {this.props.countries[this.state.CurrentQuestion + offset].topLevelDomain[0]}</p>
+        <img src={"https://www.countryflags.io/" + this.props.countries[this.state.QuestionCount + offset].alpha2Code + "/flat/64.png"} alt="flag"></img>
+        <p>Capital City: {this.props.countries[this.state.QuestionCount + offset].capital}</p>
+        <p>Population: {this.props.countries[this.state.QuestionCount + offset].population}</p>
+        <p>Main Language: {this.props.countries[this.state.QuestionCount + offset].languages[0].name}</p>
+        <p>Internet Domain: {this.props.countries[this.state.QuestionCount + offset].topLevelDomain[0]}</p>
       </div>
-
     );
 
   }
 
-  handleAnswer(question_num, side) {
+  handleAnswer(question_id, e) {
     //must create answerguide that looks at each question and has an algo to get correct answer
     //if you chose the correct side (right or left), then AdvanceQuestion and IncreaseScore, else just AdvanceQuestion
+
 
   }
 
   render () {
 
 
-    //display is based on CurrentQuestion
+    //display is based on QuestionCount
     if (this.state.gameStarted) {
 
       if (this.props.countries.length <= 0)
@@ -145,20 +170,20 @@ class MainFrame extends React.Component {
             <p>Your Score: {this.state.playerScore}/10</p>
                         <button onClick={this.reveal}>reveal</button>
               <div className="question-container">
-                <p>Question #{this.state.CurrentQuestion}: {AllQuestions[this.state.QuestionID]}</p>
+                <p>Question #{this.state.QuestionCount}: {AllQuestions[this.state.CurrentQuestion]}</p>
               </div>
 
               <h1 className="versus">VS</h1>
 
               <div className="boxes">
-                <div className="main-left" onClick={this.AdvanceQuestion}>
-                  <p className="country-text">{this.props.countries[this.state.CurrentQuestion-1].name}</p>
-                  {this.optionalInfo(this.state.CurrentQuestion, true)}
+                <div className="main-left" onClick={this.AdvanceQuestion} value="0">
+                  <p className="country-text">{this.props.countries[this.state.QuestionCount-1].name}</p>
+                  {this.optionalInfo(true)}
                 </div>
 
-                <div className="main-right" onClick={this.AdvanceQuestion}>
-                    <p className="country-text">{this.props.countries[this.state.CurrentQuestion+5].name}</p>
-                    {this.optionalInfo(this.state.CurrentQuestion, false)}
+                <div className="main-right" onClick={this.AdvanceQuestion} value="1">
+                    <p className="country-text">{this.props.countries[this.state.QuestionCount + 9].name}</p>
+                    {this.optionalInfo(false)}
                 </div>
 
               </div>

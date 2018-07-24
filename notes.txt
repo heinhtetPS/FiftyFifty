@@ -15,7 +15,8 @@ frontend
 - State tracks end of game and displays end thing (DONE)
 - Seperate LEFT and RIGHT countries (Forget about it, just use props and add numbers)
 - Different questions have to cause different pieces of data to not be displayed
-    -
+    - create custom func to return different html depending on question (DONE)
+      - Give points correctly depending on side side chosen
 
 GAME
 - Need to make some kind of answers module to figure it out

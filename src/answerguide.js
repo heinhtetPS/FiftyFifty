@@ -4,7 +4,31 @@ const AnswerGuide = {
 
   const Questions = AllQuestions;
 
-  
+  identifyQuestion(CurrentQuestion) {
+
+  }
+
+  answerFlagQues(countries, answer) {
+
+
+
+  }
+
+  answerPopQues() {
+
+  }
+
+  answerCapQues() {
+
+  }
+
+  answerLangQues() {
+
+  }
+
+  answerNetQues() {
+
+  }
 
 };
 

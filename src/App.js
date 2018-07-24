@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import MainFrame from './components/main.jsx';
 import AllCodes from './allcodes.js';
 import './App.css';
@@ -40,8 +39,6 @@ class App extends Component {
   }
 
   handleStart() {
-    console.log('starting');
-
     for (let i = 0; i < 20; i++) {
       let usedValues = [];
       let random = this.getRandom();
@@ -50,7 +47,6 @@ class App extends Component {
       while (usedValues.includes(random)) {
         random = this.getRandom();
       }
-
       this.fetchCountry(AllCodes[random]);
       usedValues.push(random);
     }
@@ -63,7 +59,7 @@ class App extends Component {
       return (
         <div className="App">
           <header>
-            <h1>50/50 Game</h1>
+            <h1>Fifty/Fifty Game</h1>
             <h2>Countries of the World Quiz</h2>
           </header>
           <MainFrame countries={this.state.data}
@@ -77,8 +73,8 @@ class App extends Component {
       return (
         <div className="App">
           <header>
-            <h1>50/50 Game</h1>
-            <h2>Countries of the World Quiz</h2>
+            <h1>Fifty/Fifty Game</h1>
+            <h2>Test Your Knowledge!</h2>
           </header>
           <button onClick={this.handleStart}>start</button>
             <h1 className="blinker">Press Start to Begin the Game!</h1>
