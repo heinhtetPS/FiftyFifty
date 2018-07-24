@@ -1,6 +1,6 @@
 ## Fifty/Fifty (Work In Progress)
 
-![alt text](https://github.com/heinhtetPS/weather-test/blob/master/public/screen.jpg "preview")
+![alt text](https://github.com/heinhtetPS/NodeAssesment/blob/master/public/screen.jpg "preview")
 
 This is a single-page app meant to demonstrate creative usage of Node.js api calls and server capability. The server file is <50 lines and is a simple implementation of Node with Express, but the frontend output is a dynamic quiz game with thousands of possible question and country combinations. Fifty/Fifty aims to test your knowledge of random statistics relating to world countries such as population, capital cities, size etc... Each questions has only 2 choices, making it a 50/50 chance of getting it right. However, can you do it 10 times in a row?
 
