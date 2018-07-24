@@ -15,7 +15,7 @@ class MainFrame extends React.Component {
     this.IncreaseScore = this.IncreaseScore.bind(this);
     this.checkForGame = this.checkForGame.bind(this);
     this.restart = this.restart.bind(this);
-    this.reveal = this.reveal.bind(this);
+    // this.reveal = this.reveal.bind(this);
     this.chooseQuestion = this.chooseQuestion.bind(this);
     this.optionalInfo = this.optionalInfo.bind(this);
   }
@@ -29,10 +29,10 @@ class MainFrame extends React.Component {
     this.setState({CurrentQuestion: this.getRandom()});
   }
 
-  reveal() {
-    console.log(this.state);
-    console.log(this.props.countries);
-  }
+  // reveal() {
+  //   console.log(this.state);
+  //   console.log(this.props.countries);
+  // }
 
   getRandom() {
     let min = Math.ceil(0);
@@ -154,7 +154,7 @@ class MainFrame extends React.Component {
   }
 
   render () {
-
+    //reveal button <button onClick={this.reveal}>reveal</button>
 
     //display is based on QuestionCount
     if (this.state.gameStarted) {
@@ -168,7 +168,7 @@ class MainFrame extends React.Component {
         return (
           <div className="main-container">
             <p>Your Score: {this.state.playerScore}/10</p>
-                        <button onClick={this.reveal}>reveal</button>
+
               <div className="question-container">
                 <p>Question #{this.state.QuestionCount}: {AllQuestions[this.state.CurrentQuestion]}</p>
               </div>

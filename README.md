@@ -11,7 +11,7 @@ This is a single-page app meant to demonstrate creative usage of Node.js api cal
 - Correct answers will yield points. Get 10 questions in a row to win!
 
 ## Installation
-Simply download the repo, cd into the directory and run npm -install. Before running the app itself, you must make sure the node server is running by typing node server.js. To run the app itself, use the command npm start.
+Simply download the repo, cd into the directory and run npm -install. Before running the app itself, you must make sure the node server is running by typing node server.js. To run the app itself, you will need to open another console tab or window and use the command npm start.
 
 ### Tech Info
 - The frontend utilizes React.js, specifically implemented using create-react-app for fast startup.
@@ -75,10 +75,14 @@ Answers and points are determined by our answerguide, which looks at 3 pieces of
 
 It uses different heuristics for each question to determine the correct answer. For example, during a population question, it will compare props.countries[2].population vs props.countries[12].population and see if you chose the same answer. If so, you will receive a point. If not, it will simply advance to the next question.
 
-For debugging purposes, I have included a commented out function called reveal, which simply invokes console.log to display the current state and props.
+For debugging purposes, I have included a commented-out function called reveal, in the main component, which simply invokes console.log to display the current state and props.
+
+### Current Issues / Bugs
+- MAJOR: Due to how the 2 boxes display, LEFT is always the correct answer. Add some variable in OptionInfo to fix. 
+- Sometimes discrepancies in alpha2Codes cause flags to not display. Fix by pulling flags from the same source (have to use alpha3code instead).
+- Sometimes for questions like LANG, both answers can be correct.
 
 ### Future Directions / Improvements
 - Add google maps to show location. Ask if this is the correct location.
 - Additional questions can be added when additional algorithms for the answer guide are added.
 - An endless mode where you build up score until you get one wrong. This can include a leaderboard system for highest scores. This will require adding a backend database to persist scores and player identities.
-- Sometimes discrepencies in alpha2Codes cause flags to not display. Fix by pulling flags from the same source.

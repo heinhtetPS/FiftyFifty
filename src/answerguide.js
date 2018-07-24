@@ -10,6 +10,8 @@ const AnswerGuide = {
 
   answerFlagQues(countries, answer) {
 
+    //if it is using leftside as default, only left will be correct 
+    //this.props.countries[this.state.QuestionCount-1].alpha2Code
 
 
   }
