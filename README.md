@@ -66,23 +66,26 @@ If the server is listening, it will invoke its country route, which in turn will
 
 From here, our data will travel from the Parent 'App.js' component into the 'main' component which hosts the game. This is achieved through providing the data as props when 'main' is created. Now the game has access to the data and can commence.
 
-Game flow is controlled by state.QuestionCount, which is a variable with 2 jobs: while it counts the question from 1-10, it also acts as an index to access props.countries (our large store of 20 countries). Each side of the choice UI displays country info according to this same number. Right and left are differentiated using a simple offset value. Since QuestionCount starts at 1, offset for leftside will display country information in props.countries[0-9] and rightside will display props.countries[10-19]. Since the countries are already pre-randomized, it does not matter that we are showing them in sequence.
+Game flow is controlled by state.QuestionCount, which is a variable with 2 jobs: while it counts the question from 1-10, it also acts as an index to access props.countries (our large store of 20 countries). Each side of the choice UI displays country info according to this same number. Right and left are differentiated using a simple offset value. Since QuestionCount starts at 1, offset for leftside will display country information in props.countries[0-9] and rightside will display props.countries[10-19]. Thus there are 2 static offset values: -1 for leftside and +9 for rightside. Since the countries are already pre-randomized, it does not matter that we are showing them in sequence.
 
 Answers and points are determined by our answerguide, which looks at 3 pieces of information to answer any question.
 1) The question's text. To determine what type of question it is.
 2) The 2 countries being compared (for example: props.countries[2] vs props.countries[12])
 3) The player's chosen side via event handler.
 
-It uses different heuristics for each question to determine the correct answer. For example, during a population question, it will compare props.countries[2].population vs props.countries[12].population and see if you chose the same answer. If so, you will receive a point. If not, it will simply advance to the next question.
+It uses different heuristics for each question to determine the correct answer. Currently there are 2 types of questions: "Which" questions and "Compare" questions. In a "Which" question, a single attribute of the display is duplicated (such as flag) for 2 different countries. We ask the user to pick the side where the correct info is being shown. This is controlled by a "wildcard" variable which picks which side will contain the correct info. "Compare" questions simply compare 2 mathematical attributes such as population.
 
 For debugging purposes, I have included a commented-out function called reveal, in the main component, which simply invokes console.log to display the current state and props.
 
 ### Current Issues / Bugs
-- MAJOR: Due to how the 2 boxes display, LEFT is always the correct answer. Add some variable in OptionInfo to fix. 
+- MAJOR: Due to how the 2 boxes display, LEFT is always the correct answer. Add some variable in OptionInfo to fix. (fixed)
+- Sometimes, the answers seem to go out of sync with the questions, like its looking at a different country other than the ones displayed (fixed)
+- Refactor inefficient methods like optionalInfo()
 - Sometimes discrepancies in alpha2Codes cause flags to not display. Fix by pulling flags from the same source (have to use alpha3code instead).
 - Sometimes for questions like LANG, both answers can be correct.
 
 ### Future Directions / Improvements
+- Instead of advancing immediately, show CORRECT or WRONG graphic and reveal the correct info on both sides.
 - Add google maps to show location. Ask if this is the correct location.
 - Additional questions can be added when additional algorithms for the answer guide are added.
 - An endless mode where you build up score until you get one wrong. This can include a leaderboard system for highest scores. This will require adding a backend database to persist scores and player identities.

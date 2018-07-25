@@ -9,6 +9,7 @@ class MainFrame extends React.Component {
                   CurrentQuestion: null,
                   gameStarted: props.gameStarted,
                   playerScore: 0,
+                  wildcard: -1,
                   gameOver: false}
     this.getRandom = this.getRandom.bind(this);
     this.handleAnswer = this.handleAnswer.bind(this);
@@ -19,17 +20,16 @@ class MainFrame extends React.Component {
     // this.reveal = this.reveal.bind(this);
     this.chooseQuestion = this.chooseQuestion.bind(this);
     this.optionalInfo = this.optionalInfo.bind(this);
+    this.toggleWildCard = this.toggleWildCard.bind(this);
+    this.rollWildCard = this.rollWildCard.bind(this);
     this.answerWhichQues = this.answerWhichQues.bind(this);
     this.answerCompareQues = this.answerCompareQues.bind(this);
-  }
-
-  componentWillMount () {
-
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState( { gameStarted: nextProps.gameStarted } );
     this.setState({CurrentQuestion: this.getRandom()});
+    this.rollWildCard();
   }
 
   // reveal() {
@@ -47,6 +47,7 @@ class MainFrame extends React.Component {
     this.setState(prevState => {
            return {QuestionCount: prevState.QuestionCount + 1} });
     this.checkForGame();
+    this.rollWildCard();
     this.chooseQuestion();
   }
 
@@ -69,13 +70,22 @@ class MainFrame extends React.Component {
     window.location.reload();
   }
 
+  rollWildCard() {
+    let chance = Math.random();
+    if (chance >= 0.5)
+    this.toggleWildCard();
+  }
+
+  toggleWildCard() {
+    if (this.state.wildcard === -1) {
+      this.setState({wildcard: 9});
+    } else {
+      this.setState({wildcard: -1});
+    }
+  }
+
   optionalInfo(leftside) {
-
     let offset = leftside ? -1 : 9;
-    let randomFlip = Math.random();
-    if (randomFlip >= 0.5)
-    offset = leftside ? 9 : -1;
-
     let question = AllQuestions[this.state.CurrentQuestion];
     if (this.state.CurrentQuestion === null)
     return null;
@@ -83,7 +93,7 @@ class MainFrame extends React.Component {
     if (question.includes("flag")) {
       return (
         <div className="optional-block">
-          <img src={"https://www.countryflags.io/" + this.props.countries[this.state.QuestionCount-1].alpha2Code + "/flat/64.png"} alt="flag"></img>
+          <img src={"https://www.countryflags.io/" + this.props.countries[this.state.QuestionCount + this.state.wildcard].alpha2Code + "/flat/64.png"} alt="flag"></img>
           <p>Capital City: {this.props.countries[this.state.QuestionCount + offset].capital}</p>
           <p>Population: {this.props.countries[this.state.QuestionCount + offset].population}</p>
           <p>Main Language: {this.props.countries[this.state.QuestionCount + offset].languages[0].name}</p>
@@ -96,7 +106,7 @@ class MainFrame extends React.Component {
       return (
         <div className="optional-block">
           <img src={"https://www.countryflags.io/" + this.props.countries[this.state.QuestionCount + offset].alpha2Code + "/flat/64.png"} alt="flag"></img>
-          <p>Capital City: {this.props.countries[this.state.QuestionCount-1].capital}</p>
+          <p>Capital City: {this.props.countries[this.state.QuestionCount + this.state.wildcard].capital}</p>
           <p>Population: {this.props.countries[this.state.QuestionCount + offset].population}</p>
           <p>Main Language: {this.props.countries[this.state.QuestionCount + offset].languages[0].name}</p>
           <p>Internet Domain: {this.props.countries[this.state.QuestionCount + offset].topLevelDomain[0]}</p>
@@ -121,7 +131,7 @@ class MainFrame extends React.Component {
           <img src={"https://www.countryflags.io/" + this.props.countries[this.state.QuestionCount + offset].alpha2Code + "/flat/64.png"} alt="flag"></img>
           <p>Capital City: {this.props.countries[this.state.QuestionCount + offset].capital}</p>
           <p>Population: {this.props.countries[this.state.QuestionCount + offset].population}</p>
-          <p>Main Language: {this.props.countries[this.state.QuestionCount-1].languages[0].name}</p>
+          <p>Main Language: {this.props.countries[this.state.QuestionCount + this.state.wildcard].languages[0].name}</p>
           <p>Internet Domain: {this.props.countries[this.state.QuestionCount + offset].topLevelDomain[0]}</p>
         </div>
       );
@@ -134,7 +144,7 @@ class MainFrame extends React.Component {
             <p>Capital City: {this.props.countries[this.state.QuestionCount + offset].capital}</p>
             <p>Population: {this.props.countries[this.state.QuestionCount + offset].population}</p>
             <p>Main Language: {this.props.countries[this.state.QuestionCount + offset].languages[0].name}</p>
-            <p>Internet Domain: {this.props.countries[this.state.QuestionCount-1].topLevelDomain[0]}</p>
+            <p>Internet Domain: {this.props.countries[this.state.QuestionCount + this.state.wildcard].topLevelDomain[0]}</p>
         </div>
       );
     }
@@ -153,28 +163,23 @@ class MainFrame extends React.Component {
   }
 
   handleAnswer(e) {
-    //must create answerguide that looks at each question and has an algo to get correct answer
-    //if you chose the correct side (right or left), then AdvanceQuestion and IncreaseScore, else just AdvanceQuestion
     let question = AllQuestions[this.state.CurrentQuestion];
-    let offset = e.currentTarget.id === "left" ? -1 : 9;
+    let chosenOffset = e.currentTarget.id === "left" ? -1 : 9;
 
       if (question.includes("population")) {
-        this.answerCompareQues(this.props.countries, offset);
+        this.answerCompareQues(this.props.countries, chosenOffset);
       } else {
-        this.answerWhichQues(this.props.countries, offset);
+        this.answerWhichQues(this.props.countries, chosenOffset);
       }
-
-
   }
 
   answerWhichQues(countries, offset) {
 
-    let correctAnswer = countries[this.state.QuestionCount-1].alpha2Code;
+    let correctAnswer = countries[this.state.QuestionCount + this.state.wildcard].alpha2Code;
     let yourAnswer = countries[this.state.QuestionCount+offset].alpha2Code
-    //if it is using leftside as default, only left will be correct
-    //this.props.countries[this.state.QuestionCount-1].alpha2Code
-    console.log('correct:' + correctAnswer);
-    console.log('yours:' + yourAnswer);
+
+    // console.log('correct:' + correctAnswer);
+    // console.log('yours:' + yourAnswer);
 
     if (yourAnswer === correctAnswer) {
       this.IncreaseScore();
@@ -186,12 +191,12 @@ class MainFrame extends React.Component {
   answerCompareQues(countries, offset) {
 
     let country1 = countries[this.state.QuestionCount-1].population;
-    let country2 = countries[this.state.QuestionCount+5].population;
-    let correctAnswer = country1 > country2 ? countries[this.state.QuestionCount-1].alpha2Code : countries[this.state.QuestionCount+5].alpha2Code;
+    let country2 = countries[this.state.QuestionCount+9].population;
+    let correctAnswer = country1 > country2 ? countries[this.state.QuestionCount-1].alpha2Code : countries[this.state.QuestionCount+9].alpha2Code;
     let yourAnswer = countries[this.state.QuestionCount+offset].alpha2Code;
 
-    console.log('correct:' + correctAnswer);
-    console.log('yours:' + yourAnswer);
+    // console.log('correct:' + correctAnswer);
+    // console.log('yours:' + yourAnswer);
 
     if (yourAnswer === correctAnswer) {
       this.IncreaseScore();
@@ -214,7 +219,6 @@ class MainFrame extends React.Component {
         return (
           <div className="main-container">
             <p>Your Score: {this.state.playerScore}/10</p>
-
               <div className="question-container">
                 <p>Question #{this.state.QuestionCount}: {AllQuestions[this.state.CurrentQuestion]}</p>
               </div>
@@ -254,7 +258,6 @@ class MainFrame extends React.Component {
         </div>
       );
     }
-
 
   }
 }
