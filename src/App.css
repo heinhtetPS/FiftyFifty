@@ -22,6 +22,7 @@
   height: 400px;
   background-color: red;
   box-sizing: border-box;
+  z-index: 100;
 }
 
 .main-left:hover {
@@ -33,6 +34,7 @@
   height: 400px;
   background-color: blue;
   box-sizing: border-box;
+  z-index: 100;
 }
 
 .main-right:hover {

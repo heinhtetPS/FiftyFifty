@@ -4,6 +4,7 @@ import AllQuestions from '../allquestions.js';
 class MainFrame extends React.Component {
   constructor( props ) {
     super(props);
+    //QuestionCount is used to count from 1 to 10 AND also access this.props.countries[QuestionCount]
     this.state = {QuestionCount: 1,
                   CurrentQuestion: null,
                   gameStarted: props.gameStarted,
@@ -18,6 +19,8 @@ class MainFrame extends React.Component {
     // this.reveal = this.reveal.bind(this);
     this.chooseQuestion = this.chooseQuestion.bind(this);
     this.optionalInfo = this.optionalInfo.bind(this);
+    this.answerWhichQues = this.answerWhichQues.bind(this);
+    this.answerCompareQues = this.answerCompareQues.bind(this);
   }
 
   componentWillMount () {
@@ -68,7 +71,10 @@ class MainFrame extends React.Component {
 
   optionalInfo(leftside) {
 
-    let offset = leftside ? -1 : + 9;
+    let offset = leftside ? -1 : 9;
+    let randomFlip = Math.random();
+    if (randomFlip >= 0.5)
+    offset = leftside ? 9 : -1;
 
     let question = AllQuestions[this.state.CurrentQuestion];
     if (this.state.CurrentQuestion === null)
@@ -146,11 +152,51 @@ class MainFrame extends React.Component {
 
   }
 
-  handleAnswer(question_id, e) {
+  handleAnswer(e) {
     //must create answerguide that looks at each question and has an algo to get correct answer
     //if you chose the correct side (right or left), then AdvanceQuestion and IncreaseScore, else just AdvanceQuestion
+    let question = AllQuestions[this.state.CurrentQuestion];
+    let offset = e.currentTarget.id === "left" ? -1 : 9;
+
+      if (question.includes("population")) {
+        this.answerCompareQues(this.props.countries, offset);
+      } else {
+        this.answerWhichQues(this.props.countries, offset);
+      }
 
 
+  }
+
+  answerWhichQues(countries, offset) {
+
+    let correctAnswer = countries[this.state.QuestionCount-1].alpha2Code;
+    let yourAnswer = countries[this.state.QuestionCount+offset].alpha2Code
+    //if it is using leftside as default, only left will be correct
+    //this.props.countries[this.state.QuestionCount-1].alpha2Code
+    console.log('correct:' + correctAnswer);
+    console.log('yours:' + yourAnswer);
+
+    if (yourAnswer === correctAnswer) {
+      this.IncreaseScore();
+    }
+    this.AdvanceQuestion();
+  }
+
+
+  answerCompareQues(countries, offset) {
+
+    let country1 = countries[this.state.QuestionCount-1].population;
+    let country2 = countries[this.state.QuestionCount+5].population;
+    let correctAnswer = country1 > country2 ? countries[this.state.QuestionCount-1].alpha2Code : countries[this.state.QuestionCount+5].alpha2Code;
+    let yourAnswer = countries[this.state.QuestionCount+offset].alpha2Code;
+
+    console.log('correct:' + correctAnswer);
+    console.log('yours:' + yourAnswer);
+
+    if (yourAnswer === correctAnswer) {
+      this.IncreaseScore();
+    }
+    this.AdvanceQuestion();
   }
 
   render () {
@@ -176,12 +222,12 @@ class MainFrame extends React.Component {
               <h1 className="versus">VS</h1>
 
               <div className="boxes">
-                <div className="main-left" onClick={this.AdvanceQuestion} value="0">
-                  <p className="country-text">{this.props.countries[this.state.QuestionCount-1].name}</p>
+                <div className="main-left" id="left" onClick={(e) => this.handleAnswer(e)}>
+                  <p className="country-text">{this.props.countries[this.state.QuestionCount - 1].name}</p>
                   {this.optionalInfo(true)}
                 </div>
 
-                <div className="main-right" onClick={this.AdvanceQuestion} value="1">
+                <div className="main-right" id="right" onClick={(e) => this.handleAnswer(e)}>
                     <p className="country-text">{this.props.countries[this.state.QuestionCount + 9].name}</p>
                     {this.optionalInfo(false)}
                 </div>
