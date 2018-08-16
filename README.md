@@ -1,4 +1,4 @@
-## Fifty/Fifty (Work In Progress)
+## Fifty/Fifty (Countries Quiz)
 
 [Live version](http://heinhtetps.info/FiftyFifty/)
 
