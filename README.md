@@ -1,5 +1,7 @@
 ## Fifty/Fifty (Work In Progress)
 
+[Live version](http://heinhtetps.info/FiftyFifty/)
+
 ![alt text](https://github.com/heinhtetPS/NodeAssesment/blob/master/public/screen.jpg "preview")
 
 This is a single-page app meant to demonstrate creative usage of Node.js api calls and server capability. The server file is <50 lines and is a simple implementation of Node with Express, but the frontend output is a dynamic quiz game with thousands of possible question and country combinations. Fifty/Fifty aims to test your knowledge of random statistics relating to world countries such as population, capital cities, size etc... Each questions has only 2 choices, making it a 50/50 chance of getting it right. However, can you do it 10 times in a row?
@@ -10,9 +12,6 @@ This is a single-page app meant to demonstrate creative usage of Node.js api cal
 - All data used for the questions are real time and up to date as they are retrieved from live data sources. (http://restcountries.eu/)
 - Correct answers will yield points. Get 10 questions in a row to win!
 
-## Installation
-Simply download the repo, cd into the directory and run 'npm -install'. Before running the app itself, you must make sure the node server is running by typing 'node server.js'. To run the app itself, you will need to open another console tab or window and use the command 'npm start'. This should open up a browser of your choice with the app ready to begin.
-
 ### Tech Info
 - The frontend utilizes React.js, specifically implemented using create-react-app for fast startup.
 - Upon starting the game, data is fetched via the Node server's endpoint which, in turn, fetches data from a live data source. The data then travels through the Node server and is served back to the frontend.
@@ -22,7 +21,9 @@ Simply download the repo, cd into the directory and run 'npm -install'. Before r
   - bodyParser (to extract request params)
   - extend (simple object merging)
 
-### Implementation process outline and notes
+### Deploy
+
+The app is deployed on my portfolio site (http://heinhtetps.info/FiftyFifty/). A deploy helper npm library named gh-pages was used to make a smooth deployment process to github pages. As I already have my github pages URL redirect to my personal portfolio domain, the app is then hosted on my portfolio domain. 
 
 ## Retrieving our data
 
